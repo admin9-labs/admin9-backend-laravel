@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Log\CustomizeFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -54,7 +55,7 @@ return [
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', env('LOG_STACK', 'single')),
+            'channels' => explode(',', env('LOG_STACK', 'single,daily')),
             'ignore_exceptions' => false,
         ],
 
@@ -63,6 +64,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            'tap' => [CustomizeFormatter::class],
         ],
 
         'daily' => [
@@ -71,6 +73,7 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => env('LOG_DAILY_DAYS', 14),
             'replace_placeholders' => true,
+            'tap' => [CustomizeFormatter::class],
         ],
 
         'slack' => [
@@ -127,6 +130,18 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'sql' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/sql.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'permission' => 0664,
+            'tap' => [CustomizeFormatter::class],
+        ],
     ],
 
+    'query' => [
+        'enabled' => env('ENABLE_QUERY_LOG', true),
+        'channel' => 'sql',
+        'excluded_tables' => [],
+    ],
 ];
