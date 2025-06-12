@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Mitoop\Http\Responder;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
@@ -25,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin9_token',
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(static function (Throwable $e, Request $request) {
             if ($request->expectsJson()) {
                 return match (true) {
