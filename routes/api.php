@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PortalController;
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::group(['middleware' => ['auth:admin']], function () {
-    Route::get('/me', [AuthController::class, 'me']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+Route::name('api.')->group(function () {
+    Route::get('/', [PortalController::class, 'welcome']);
+    Route::get('/portal/home', [PortalController::class, 'home']);
 });
+
