@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class AuthController extends Controller
@@ -49,16 +50,26 @@ class AuthController extends Controller
 
     public function changePassword()
     {
-        //
-    }
+        $this->validate(request(), [
+            'current_password' => 'required|string',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
 
-    public function update(Request $request, string $id)
-    {
-        //
+        $user = admin();
+
+        if (! Hash::check(request('current_password'), $user->password)) {
+            return $this->error('原密码错误');
+        }
+
+        $user->update(['password' => request('password')]);
+
+        return $this->success();
     }
 
     public function logout()
     {
-        //
+        $this->auth->logout();
+
+        return $this->success();
     }
 }
