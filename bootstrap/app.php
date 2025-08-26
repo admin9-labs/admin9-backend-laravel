@@ -23,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: [
-            'admin9_token',
+            'comfyui_token',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

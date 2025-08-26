@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
+use App\Models\Instance;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,17 +16,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(50)->create();
 
-        User::factory()->create([
+        Admin::factory()->create([
             'name' => 'admin',
-            'email' => 'admin@admin9.com',
+            'email' => 'admin@comfyui.ai',
             'password' => argon('111111'),
         ]);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'fengqiyue',
+            'mobile' => '15881551001',
+            'email' => 'fengqiyue@gmail.com',
+            'password' => argon('111111'),
+            'avatar' => '/avatars/1.png',
+        ]);
+
+        User::factory()->unverified()->create([
+            'name' => 'user_'.Str::random(10),
+            'mobile' => '18668097379',
+            'password' => argon('111111'),
+            'avatar' => '/avatars/2.png',
         ]);
     }
 }

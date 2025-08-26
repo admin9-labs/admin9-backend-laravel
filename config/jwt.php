@@ -263,7 +263,7 @@ return [
     |
     */
 
-    'cookie_key_name' => 'admin9_token',
+    'cookie_key_name' => 'comfyui_token',
 
     /*
     |--------------------------------------------------------------------------

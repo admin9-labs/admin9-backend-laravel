@@ -52,7 +52,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://api.comfyui.test'),
+    'api_domain' => env('API_DOMAIN', 'api.comfyui.test'),
 
     /*
     |--------------------------------------------------------------------------

@@ -12,28 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->ulid('id')->primary();
+            $table->string('name',32)->unique();
+            $table->char('mobile', 11)->nullable()->index();
+            $table->string('email')->nullable()->index();
             $table->string('password');
-            $table->rememberToken();
+            $table->string('nickname', 32)->nullable()->comment('用户昵称');
+            $table->string('introduction', 64)->nullable()->comment('个性签名');
+            $table->string('avatar')->nullable();
+            $table->string('realname', 32)->nullable()->comment('真实姓名');
+            $table->string('idcard', 18)->nullable()->index()->comment('身份证号');
+            $table->timestamp('identity_verified_at')->nullable()->comment('实名认证时间');
             $table->timestamps();
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
         });
     }
 
@@ -43,7 +33,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };

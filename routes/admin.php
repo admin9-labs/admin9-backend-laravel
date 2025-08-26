@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Admin\AuthController;
 
-Route::prefix('/admin')->name('admin.')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::group(['middleware' => ['auth:admin']], function () {
-        Route::get('me', [AuthController::class, 'me']);
-        Route::put('change-password', [AuthController::class, 'changePassword']);
-        Route::post('logout', [AuthController::class, 'logout']);
+Route::domain(config('app.api_domain'))->group(function () {
+    Route::prefix('/v1/admin')->group(function () {
+        Route::post('login', [AuthController::class, 'login']);
+        Route::group(['middleware' => ['auth:admin']], function () {
+            Route::get('me', [AuthController::class, 'me']);
+            Route::put('change-password', [AuthController::class, 'changePassword']);
+            Route::post('logout', [AuthController::class, 'logout']);
+        });
     });
 });

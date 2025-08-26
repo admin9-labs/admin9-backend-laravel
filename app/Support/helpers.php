@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 
@@ -25,9 +26,16 @@ if (! function_exists('is_dev')) {
 }
 
 if (! function_exists('admin')) {
-    function admin(): (User&Authenticatable)|null
+    function admin(): (Admin&Authenticatable)|null
     {
         return auth('admin')->user();
+    }
+}
+
+if (! function_exists('user')) {
+    function user(): (User&Authenticatable)|null
+    {
+        return auth('user')->user();
     }
 }
 

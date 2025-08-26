@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class AuthController extends Controller
 {
-
     /**
      * @param  JWTGuard  $auth
      */
@@ -38,13 +36,13 @@ class AuthController extends Controller
 
     public function me()
     {
-        /** @var User $user */
-        $user = $this->auth->user();
+        /** @var Admin $admin */
+        $admin = $this->auth->user();
 
         return $this->success([
-            'name' => $user->name,
-            'email' => $user->email,
-            'role' => $user->role()->value,
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'role' => $admin->role()->value,
         ]);
     }
 
@@ -55,13 +53,13 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $user = admin();
+        $admin = admin();
 
-        if (! Hash::check(request('current_password'), $user->password)) {
+        if (! Hash::check(request('current_password'), $admin->password)) {
             return $this->error('原密码错误');
         }
 
-        $user->update(['password' => request('password')]);
+        $admin->update(['password' => request('password')]);
 
         return $this->success();
     }
