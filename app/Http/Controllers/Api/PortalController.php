@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class PortalController extends Controller
 {
@@ -14,6 +13,6 @@ class PortalController extends Controller
 
     public function home()
     {
-        return $this->success("Welcome to Admin9 API");
+        return $this->success('Welcome to Admin9 API');
     }
 }

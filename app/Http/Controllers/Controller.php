@@ -7,6 +7,5 @@ use Mitoop\Http\JsonResponder;
 
 abstract class Controller
 {
-    use JsonResponder;
-    use ValidatesRequests;
+    use JsonResponder, ValidatesRequests;
 }
