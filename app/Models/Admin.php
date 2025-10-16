@@ -16,6 +16,21 @@ class Admin extends Authenticatable implements JWTSubject, RoleAware
     /** @use HasFactory<AdminFactory> */
     use HasFactory, HasJWT, Notifiable;
 
+    protected $fillable = [
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
+
     public function role(): Role
     {
         return Role::ADMIN;
