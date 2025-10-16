@@ -7,10 +7,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Mitoop\Http\RespondsWithJson;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class AuthService
 {
+    use RespondsWithJson;
+
     /**
      * 注册
      */
@@ -183,7 +186,7 @@ class AuthService
     {
         $token = $auth->login($user);
 
-        return response()->json([
+        return $this->success([
             'token' => $token,
             'token_type' => 'bearer',
             'expires_in' => config('jwt.ttl'),
