@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Mitoop\Http\JsonResponder;
+use Mitoop\Http\RespondsWithJson;
 
 abstract class Controller
 {
-    use JsonResponder, ValidatesRequests;
+    use RespondsWithJson, ValidatesRequests;
 }
