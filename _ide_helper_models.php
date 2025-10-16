@@ -13,8 +13,6 @@
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property string $name
  * @property string $email
@@ -39,8 +37,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property string $id
  * @property string $name
  * @property string|null $mobile
@@ -59,8 +55,6 @@ namespace App\Models{
  * @property-read mixed $mobile_verified
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Workflow> $workflows
- * @property-read int|null $workflows_count
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
@@ -84,23 +78,9 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
- * @property string $id
- * @property string $user_id 用户ID
- * @property string $name
- * @property string $content 工作流内容
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Workflow whereUserId($value)
  */
 	class Workflow extends \Eloquent {}
 }
