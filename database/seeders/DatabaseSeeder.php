@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(50)->create();
+        User::factory(20)->create();
 
         Admin::factory()->create([
             'name' => 'admin',
-            'email' => 'admin@comfyui.ai',
+            'email' => 'admin@admin9.com',
             'password' => argon('111111'),
         ]);
 
