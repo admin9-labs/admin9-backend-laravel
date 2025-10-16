@@ -10,7 +10,7 @@
         "archtechx/enums": "^1.1",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "mitoop/laravel-api-response": "^5.0",
+        "mitoop/laravel-api-response": "^7.4",
         "php-open-source-saver/jwt-auth": "^2.8",
         "vinkla/hashids": "^13.0"
     },
@@ -65,7 +65,13 @@
             "@php artisan test"
         ],
         "pint": [
-            "./vendor/bin/pint --preset=laravel"
+            "./vendor/bin/pint --parallel --preset=laravel"
+        ],
+        "ide-helper": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta",
+            "@php artisan ide-helper:models --nowrite",
+            "./vendor/bin/pint --quiet --dirty --parallel --preset=laravel"
         ]
     },
     "extra": {
