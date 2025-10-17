@@ -59,7 +59,13 @@
             "@php artisan test"
         ],
         "pint": [
-            "./vendor/bin/pint --preset=laravel"
+            "./vendor/bin/pint --parallel --preset=laravel"
+        ],
+        "ide-helper": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta",
+            "@php artisan ide-helper:models --nowrite",
+            "./vendor/bin/pint --quiet --dirty --parallel --preset=laravel"
         ]
     },
     "extra": {
