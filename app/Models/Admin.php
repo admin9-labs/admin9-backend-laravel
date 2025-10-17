@@ -17,6 +17,8 @@ class Admin extends Authenticatable implements JWTSubject, RoleAware
     use HasFactory, HasJWT, Notifiable;
 
     protected $fillable = [
+        'name',
+        'email',
         'password',
     ];
 
