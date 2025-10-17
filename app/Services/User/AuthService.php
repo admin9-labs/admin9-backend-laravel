@@ -76,7 +76,62 @@ class AuthService
         $user = user();
 
         if (! $this->verifyByAny($user, $data)) {
-            abort(422, '验证失败');
+            abort(422, '身份验证失败');
+        }
+
+        $user->update(['password' => $data['password']]);
+    }
+
+    /**
+     * 设置密码（用于没有密码的用户）
+     */
+    public function setPassword(string $password): void
+    {
+        $user = user();
+        $user->update(['password' => $password]);
+    }
+
+    /**
+     * 发送密码重置验证码
+     */
+    public function sendPasswordResetCode(array $data): void
+    {
+        $field = isset($data['email']) ? 'email' : 'mobile';
+        $value = $field === 'email' ? strtolower($data['email']) : $data['mobile'];
+        
+        // 检查用户是否存在
+        $user = User::where($field, $value)->first();
+        if (! $user) {
+            abort(422, '该' . $this->label($field) . '未注册');
+        }
+
+        // 生成6位数验证码
+        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        
+        // 存储验证码，有效期10分钟
+        Cache::put('reset_code:' . $value, $code, 600);
+        
+        // 这里应该发送邮件或短信，现在先用Log记录
+        \Log::info('Password reset code for ' . $value . ': ' . $code);
+    }
+
+    /**
+     * 重置密码
+     */
+    public function resetPassword(array $data): void
+    {
+        $field = isset($data['email']) ? 'email' : 'mobile';
+        $value = $field === 'email' ? strtolower($data['email']) : $data['mobile'];
+        
+        // 验证重置验证码
+        if (! $this->verifyResetCode($value, $data['code'])) {
+            abort(422, '验证码错误或已过期');
+        }
+
+        // 查找用户并重置密码
+        $user = User::where($field, $value)->first();
+        if (! $user) {
+            abort(422, '用户不存在');
         }
 
         $user->update(['password' => $data['password']]);
@@ -177,6 +232,14 @@ class AuthService
     private function verify(string $key, string $code): bool
     {
         return Cache::pull('verify_code:'.$key) === $code;
+    }
+
+    /**
+     * 验证重置密码验证码并删除缓存
+     */
+    private function verifyResetCode(string $key, string $code): bool
+    {
+        return Cache::pull('reset_code:'.$key) === $code;
     }
 
     /**

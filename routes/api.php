@@ -13,8 +13,14 @@ Route::prefix('auth')->group(function () {
     Route::post('login/account', [AuthController::class, 'loginByAccount']);
     Route::post('login/mobile', [AuthController::class, 'loginByMobile']);
     Route::post('login/email', [AuthController::class, 'loginByEmail']);
+    
+    // 密码重置相关路由（无需认证）
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    
     Route::middleware('auth:user')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
         Route::post('set-password', [AuthController::class, 'setPassword']);
         Route::post('change-password', [AuthController::class, 'changePassword']);
         Route::post('bind/mobile', [AuthController::class, 'bindMobile']);
