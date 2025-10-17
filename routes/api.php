@@ -9,14 +9,17 @@ Route::post('/verify-code', [VerifyCodeController::class, 'send']);
 Route::get('/portal/home', [PortalController::class, 'home']);
 
 Route::prefix('auth')->group(function () {
-    Route::post('register', [AuthController::class, 'register']);
-    Route::post('login/account', [AuthController::class, 'loginByAccount']);
-    Route::post('login/mobile', [AuthController::class, 'loginByMobile']);
-    Route::post('login/email', [AuthController::class, 'loginByEmail']);
-    
-    // 密码重置相关路由（无需认证）
-    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
-    Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    // 用户注册和登录相关路由（添加速率限制）
+    Route::middleware(['throttle:auth'])->group(function () {
+        Route::post('register', [AuthController::class, 'register']);
+        Route::post('login/account', [AuthController::class, 'loginByAccount']);
+        Route::post('login/mobile', [AuthController::class, 'loginByMobile']);
+        Route::post('login/email', [AuthController::class, 'loginByEmail']);
+        
+        // 密码重置相关路由（无需认证但需要速率限制）
+        Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+        Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    });
     
     Route::middleware('auth:user')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);

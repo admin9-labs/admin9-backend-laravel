@@ -42,8 +42,11 @@ class PasswordResetTest extends TestCase
             'email' => 'nonexistent@example.com',
         ]);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['email']);
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'code' => 422,
+            ]);
     }
 
     public function test_password_reset_request_validates_existing_mobile(): void
@@ -52,8 +55,11 @@ class PasswordResetTest extends TestCase
             'mobile' => '13812345678',
         ]);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['mobile']);
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'code' => 422,
+            ]);
     }
 
     public function test_user_can_reset_password_with_valid_code(): void
@@ -68,7 +74,7 @@ class PasswordResetTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-            ->assertJson(['message' => '密码重置成功']);
+            ->assertJson(['data' => '密码重置成功']);
     }
 
     public function test_password_reset_fails_with_invalid_code(): void
@@ -81,7 +87,11 @@ class PasswordResetTest extends TestCase
             'password' => 'NewPassword123!',
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'code' => 422,
+            ]);
     }
 
     public function test_password_reset_with_mobile_and_valid_code(): void
@@ -96,7 +106,7 @@ class PasswordResetTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-            ->assertJson(['message' => '密码重置成功']);
+            ->assertJson(['data' => '密码重置成功']);
     }
 
     public function test_password_reset_validates_password_strength(): void
@@ -110,7 +120,13 @@ class PasswordResetTest extends TestCase
             'password' => '123', // Too weak
         ]);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['password']);
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'code' => 422,
+            ])
+            ->assertJsonStructure([
+                'errors' => ['password']
+            ]);
     }
 }

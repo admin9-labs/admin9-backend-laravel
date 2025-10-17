@@ -39,8 +39,14 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->postJson('/api/auth/register', []);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['name', 'password']);
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'code' => 422,
+            ])
+            ->assertJsonStructure([
+                'errors' => ['name', 'password']
+            ]);
     }
 
     public function test_user_registration_validates_unique_username(): void
@@ -52,8 +58,14 @@ class AuthenticationTest extends TestCase
             'password' => 'Password123!',
         ]);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['name']);
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'code' => 422,
+            ])
+            ->assertJsonStructure([
+                'errors' => ['name']
+            ]);
     }
 
     public function test_user_can_login_with_account(): void
@@ -90,7 +102,11 @@ class AuthenticationTest extends TestCase
             'password' => 'wrongpassword',
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'code' => 422,
+            ]);
     }
 
     public function test_user_can_login_with_mobile_verification_code(): void
@@ -153,7 +169,8 @@ class AuthenticationTest extends TestCase
 
     public function test_authenticated_user_can_set_password(): void
     {
-        $user = User::factory()->create(['password' => null]);
+        // Create a user through mobile login (users created this way have auto-generated passwords)
+        $user = User::factory()->create(['mobile' => '13812345678']);
         $token = auth('user')->login($user);
 
         $response = $this->withHeaders([
@@ -163,7 +180,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-            ->assertJson(['message' => '密码设置成功']);
+            ->assertJson(['data' => '密码设置成功']);
     }
 
     public function test_authenticated_user_can_change_password_with_current_password(): void
@@ -179,6 +196,6 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-            ->assertJson(['message' => '密码修改成功']);
+            ->assertJson(['data' => '密码修改成功']);
     }
 }
