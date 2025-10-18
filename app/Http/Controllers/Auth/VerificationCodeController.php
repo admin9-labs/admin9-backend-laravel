@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\VerifyCodeNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
@@ -23,7 +24,7 @@ class VerificationCodeController extends Controller
         if (is_prod()) {
             $limitKey = sprintf('verify_code_limit:%s', $data['mobile'] ?? $data['email']);
             if (Cache::has($limitKey)) {
-                return $this->error('请勿频繁请求验证码');
+                return $this->deny(__('messages.verification_code_rate_limit'));
             }
 
             // 生成验证码
@@ -47,10 +48,7 @@ class VerificationCodeController extends Controller
             $codeKey = sprintf('verify_code:%s', $data['mobile'] ?? $data['email']);
             Cache::put($codeKey, '111111', now()->addMinutes(10));
         }
-    }
 
-    protected function cacheKey(string $channel, string $target, string $scene): string
-    {
-        return 'verify:'.$channel.':'.$target.':'.$scene;
+        return $this->success(['sent' => true], __('messages.verification_code_sent'));
     }
 }
