@@ -22,8 +22,10 @@ class User extends Authenticatable implements JWTSubject, RoleAware
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'email_verified_at',
+        'phone_verified_at',
         'avatar',
     ];
 
@@ -36,6 +38,7 @@ class User extends Authenticatable implements JWTSubject, RoleAware
     {
         return [
             'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -44,6 +47,20 @@ class User extends Authenticatable implements JWTSubject, RoleAware
     {
         return Attribute::make(
             get: fn (mixed $value, $attribute) => ! empty($attribute['email']),
+        );
+    }
+
+    protected function phoneVerified(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, $attribute) => ! empty($attribute['phone_verified_at']),
+        );
+    }
+
+    protected function isPasswordSet(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ! empty($this->password),
         );
     }
 
