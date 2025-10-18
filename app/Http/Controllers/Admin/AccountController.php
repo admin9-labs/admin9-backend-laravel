@@ -44,7 +44,7 @@ class AccountController extends Controller
     {
         $this->validate(request(), [
             'current_password' => ['required', 'string'],
-            'new_password' => ['required', 'string', 'confirmed', Password::defaults()],
+            'password' => ['required', 'string', 'confirmed', Password::defaults()],
         ]);
 
         /** @var Admin $admin */

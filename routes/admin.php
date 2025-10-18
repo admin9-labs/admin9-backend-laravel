@@ -15,8 +15,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Account
         Route::prefix('account')->name('account.')->group(function () {
             Route::get('', [AccountController::class, 'show'])->name('show');
-            Route::put('', [AccountController::class, 'update'])->name('update');
-            Route::put('password', [AccountController::class, 'updatePassword'])->name('password.update');
+            Route::patch('', [AccountController::class, 'update'])->name('update');
+            Route::patch('password', [AccountController::class, 'updatePassword'])->name('password.update');
         });
     });
 });
